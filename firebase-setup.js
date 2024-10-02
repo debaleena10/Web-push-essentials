@@ -12,4 +12,4 @@ window.firebaseUtils.initializeFirebase = function(config) {
   return initializeApp(config);
 };
 
-console.log("FirebaseUtils is available on window:", window.firebaseUtils);
+console.log("firebaseUtils is available on window:", window.firebaseUtils);
