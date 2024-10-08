@@ -2,7 +2,7 @@ self.addEventListener("notificationclick", function (event) {
     console.log("Received notificationclick event", event);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-  
+    console.log("event.notification.data", event.notification.data);
     var raw = JSON.stringify({
       eventName: "clicked",
       properties: {
