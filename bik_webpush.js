@@ -3,9 +3,10 @@ self.addEventListener("notificationclick", function (event) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   console.log("event.notification.data", event.notification.data);
+  const { templateId, broadcastId, broadcastName } = event.notification.data;
   var raw = JSON.stringify({
     eventName: "clicked",
-    properties: { ...event.notification.data },
+    properties: { templateId, broadcastId, broadcastName },
     storeUrl: self.location.host,
     broadcastId: event.notification.data.broadcastId,
     customerId: event.notification.data.customerId,
@@ -63,10 +64,11 @@ const messaging = firebase.messaging();
 function captureMessageReceiveEvent(notificationOptions) {
   console.log("Received notification", notificationOptions);
   const eventsOnDelivered = ["read"];
+  const { templateId, broadcastId, broadcastName } = notificationOptions.data;
   eventsOnDelivered.forEach((eventName) => {
     const payload = {
       eventName,
-      properties: { ...notificationOptions.data },
+      properties: { templateId, broadcastId, broadcastName },
       storeUrl: self.location.host,
       broadcastId: notificationOptions.data.broadcastId,
       customerId: notificationOptions.data.customerId,
@@ -112,7 +114,6 @@ messaging.onBackgroundMessage(function (payload) {
     },
     actions,
   };
-  console.log("notificationOptions", notificationOptions);
   captureMessageReceiveEvent(notificationOptions);
   if (!actions) {
     if (!("Notification" in window)) {
@@ -123,7 +124,6 @@ messaging.onBackgroundMessage(function (payload) {
         notificationOptions
       );
       const linkToOpen = payload.fcmOptions.link.trim();
-      console.log("payload fcmOptions", linkToOpen);
       notification.onclick = function (event) {
         event.preventDefault();
         clients.openWindow(linkToOpen, "_blank");
