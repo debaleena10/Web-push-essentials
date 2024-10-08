@@ -21,7 +21,7 @@ self.addEventListener("notificationclick", function (event) {
   };
 
   fetch(
-    `${event.notification.data.baseUrl}/campaign/webPushApiFunctions-captureEvent`,
+    `${event.notification.data.baseUrl}/webPushApiFunctions-captureEvent`,
     requestOptions
   )
     .then((response) => response.text())
