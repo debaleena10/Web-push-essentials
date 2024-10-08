@@ -63,7 +63,7 @@ importScripts("https://bikayi-chat.firebaseapp.com/__/firebase/init.js");
 const messaging = firebase.messaging();
 
 function captureMessageReceiveEvent(notificationOptions) {
-  console.log("Received notification",notificationOptions);
+  console.log("Received notification", notificationOptions);
   const eventsOnDelivered = ["delivered", "read"];
   eventsOnDelivered.forEach((eventName) => {
     const payload = {
@@ -87,7 +87,8 @@ function captureMessageReceiveEvent(notificationOptions) {
     };
 
     fetch(
-      notificationOptions.data.baseUrl + "/webPushApiFunctions-captureEvent",
+      notificationOptions.data.baseUrl +
+        "/campaign/webPushApiFunctions-captureEvent",
       requestOptions
     )
       .then((response) => response.text())
@@ -96,6 +97,7 @@ function captureMessageReceiveEvent(notificationOptions) {
 }
 
 messaging.onBackgroundMessage(function (payload) {
+  console.log("payload",payload);
   const actions = JSON.parse(payload.data["actions"]);
   const broadcastId = parseInt(payload.data["broadcast_id"]);
   const customerId = parseInt(payload.data["customer_id"]);
@@ -115,6 +117,7 @@ messaging.onBackgroundMessage(function (payload) {
     },
     actions,
   };
+  console.log("notificationOptions", notificationOptions);
   captureMessageReceiveEvent(notificationOptions);
   if (!actions) {
     if (!("Notification" in window)) {
@@ -124,9 +127,11 @@ messaging.onBackgroundMessage(function (payload) {
         notificationTitle,
         notificationOptions
       );
+      const linkToOpen = payload.fcmOptions.link.trim();
+      console.log("payload fcmOptions", linkToOpen);
       notification.onclick = function (event) {
         event.preventDefault();
-        clients.openWindow(payload.fcmOptions.link, "_blank");
+        clients.openWindow(linkToOpen, "_blank");
         notification.close();
       };
     }
