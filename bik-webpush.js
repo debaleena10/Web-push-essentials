@@ -88,7 +88,7 @@ function captureMessageReceiveEvent(notificationOptions) {
 
     fetch(
       notificationOptions.data.baseUrl +
-        "/campaign/webPushApiFunctions-captureEvent",
+        "/webPushApiFunctions-captureEvent",
       requestOptions
     )
       .then((response) => response.text())
@@ -97,7 +97,7 @@ function captureMessageReceiveEvent(notificationOptions) {
 }
 
 messaging.onBackgroundMessage(function (payload) {
-  console.log("payload",payload);
+  console.log("payload",payload)
   const actions = JSON.parse(payload.data["actions"]);
   const broadcastId = parseInt(payload.data["broadcast_id"]);
   const customerId = parseInt(payload.data["customer_id"]);
