@@ -4,7 +4,7 @@ self.addEventListener("notificationclick", function (event) {
   myHeaders.append("Content-Type", "application/json");
   console.log("event.notification.data", event.notification.data);
   var raw = JSON.stringify({
-    eventName: "clicked",
+    eventName: "read", // pushing read event in case read event is not pushed
     properties: { ...event.notification.data },
     storeUrl: self.location.host,
     broadcastId: event.notification.data.broadcastId,
@@ -92,7 +92,7 @@ function captureMessageReceiveEvent(notificationOptions) {
 }
 
 messaging.onBackgroundMessage(function (payload) {
-  console.log("payload", payload);
+  console.log("payload in background message, if it is working", payload);
   const actions = JSON.parse(payload.data["actions"]);
   const broadcastId = parseInt(payload.data["broadcast_id"]);
   const customerId = parseInt(payload.data["customer_id"]);

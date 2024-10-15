@@ -5,7 +5,7 @@ self.addEventListener("notificationclick", function (event) {
   console.log("event.notification.data", event.notification.data);
   const { templateId, broadcastId, broadcastName } = event.notification.data;
   var raw = JSON.stringify({
-    eventName: "clicked",
+    eventName: "read", // pushing read event in case read event is not pushed
     properties: { templateId, broadcastId, broadcastName },
     storeUrl: self.location.host,
     broadcastId: event.notification.data.broadcastId,
@@ -62,7 +62,7 @@ importScripts("https://bikayi-chat.firebaseapp.com/__/firebase/init.js");
 const messaging = firebase.messaging();
 
 function captureMessageReceiveEvent(notificationOptions) {
-  console.log("Received notification", notificationOptions);
+  console.log("payload in background message, if it is working", notificationOptions);
   const eventsOnDelivered = ["read"];
   const { templateId, broadcastId, broadcastName } = notificationOptions.data;
   eventsOnDelivered.forEach((eventName) => {
